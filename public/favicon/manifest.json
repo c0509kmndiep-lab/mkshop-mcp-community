@@ -1,0 +1,22 @@
+{
+  "name": "AkiTao",
+  "short_name": "AkiTao",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#ffb200",
+  "background_color": "#000000",
+  "icons": [
+    {
+      "src": "/favicon/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

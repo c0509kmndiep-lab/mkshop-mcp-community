@@ -1,0 +1,1 @@
+Could you use the akimcp tools (aki__*) as primary, and fall back to your subagent shell for commands that akimcp cannot execute?

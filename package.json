@@ -1,0 +1,40 @@
+{
+  "name": "mkshop-mcp-community",
+  "version": "0.1.0-beta.1",
+  "description": "Community fork of Aki MCP with MKShop Windows GUI and workflow enhancements",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "akimcp": "bin/akimcp.js",
+    "mkshop-mcp": "bin/akimcp.js"
+  },
+  "files": [
+    "bin",
+    "scripts",
+    "!scripts/postman/test",
+    "public",
+    "LICENSE",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "scripts": {
+    "start": "node ./scripts/start.js",
+    "dev": "node ./scripts/start.js --dev",
+    "test": "node ./test/streamable-bridge.test.js && node ./test/oauth.test.js && node ./test/oauth-single-token.test.js && node ./test/passphrase-roll.test.js && node ./test/postman.test.js && node ./test/roots.test.js && node ./test/shell-mcp.test.js && node ./test/trusted-zone.test.js && node ./test/rule-context.test.js && node ./test/rule-context-mcp.test.js && node ./test/rule-context-gate.test.js && node ./test/cli-and-dev-mode.test.js && node ./test/port-mcp.test.js && node ./test/git-mcp.test.js && node ./test/output-shape.test.js && node ./test/sqlite-mcp.test.js && node ./test/cdp-extensions.test.js && node ./test/chrome-profile.test.js && node ./test/chrome-mcp.test.js && node ./test/fetch-mcp.test.js && node ./test/system-mcp.test.js && node ./test/task-mcp.test.js && node ./test/terminal-mcp.test.js && node ./test/terminal-p0-windows.test.js && node ./test/terminal-mcp-protocol.test.js && node ./test/conpty-mcp.test.js && node ./test/windows-gui-mcp.test.js && node ./test/gui2-workflow.test.js && node ./test/self-healing-health.test.js && node ./test/font-awesome-static.test.js && node ./test/rate-limit.test.js && node ./test/callers.test.js && node ./test/oauth-activity.test.js"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-free": "7.3.1",
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "@xterm/headless": "^6.0.0",
+    "chrome-remote-interface": "^0.33.0",
+    "diff": "^8.0.3",
+    "node-pty": "^1.1.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "node": "^22.23.3"
+  },
+  "private": true
+}
