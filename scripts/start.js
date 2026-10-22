@@ -37,9 +37,12 @@ Options:
   process.exit(0);
 }
 
-// process.loadEnvFile throws ENOENT when the file is missing — swallow it so a .env is optional.
-try { process.loadEnvFile?.(); } catch {}
-if (existsSync('.env')) console.log('[start] loaded environment from .env');
+// Load only the .env that belongs to this installation/checkout. Never implicitly load the
+// caller's current-working-directory .env: a global `mkshop-mcp` invocation from an unrelated
+// project must not inherit that project's secrets or security-sensitive MCP overrides.
+const bundledEnv = new URL('../.env', import.meta.url);
+try { process.loadEnvFile?.(bundledEnv); } catch {}
+if (existsSync(bundledEnv)) console.log('[start] loaded environment from installation .env');
 
 if (process.argv.includes('--no-browser')) {
   process.env.MCP_SKIP_BROWSER_OPEN = '1';

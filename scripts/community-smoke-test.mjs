@@ -11,6 +11,8 @@ const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'..');
 const tests=[
  'test/community-defaults.test.js',
  'test/roots.test.js',
+ 'test/shell-mcp.test.js',
+ 'test/fetch-mcp.test.js',
  'test/windows-gui-mcp.test.js',
  'test/gui2-workflow.test.js',
  'test/oauth.test.js',
