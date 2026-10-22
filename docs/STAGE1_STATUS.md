@@ -5,7 +5,7 @@ Date: 2026-10-22
 ## Source and license
 - Forked locally from Aki MCP Server v2.2.0 (MIT), including selected local MKShop GUI/Workflow enhancements.
 - Original MIT LICENSE preserved; original author credited in README and THIRD_PARTY_NOTICES.
-- New independent repository history; no production .git history.
+- Independent Community commit history, with GitHub's original Initial commit preserved as a merge ancestor; no production .git history.
 
 ## Changes to standalone Community copy
 - NPM package mkshop-mcp-community, version 0.1.0-beta.1, private=true.
@@ -21,12 +21,15 @@ Date: 2026-10-22
 - Static relative-import resolution: zero missing files.
 - High-confidence secret / absolute-path / private-domain pattern scan: zero findings.
 - Static copy remains independent; production not restarted.
+- Community default-roots smoke test PASS: only isolated workspace, no default trusted-script folders.
+- GitHub private-beta source pushed to c0509kmndiep-lab/mkshop-mcp-community; branch SHA verified locally against git ls-remote.
 
 ## Pending before public release
-- Publish as a *private* GitHub repository after proper remote repository creation.
+- Confirm repository visibility via GitHub settings before any public release; public unauthenticated API currently returns 404 (consistent with private visibility).
+- Review GitHub Actions CI run results after upload.
 - Independent npm dependency installation, npm pack, GUI runtime smoke test.
 - Full third-party license and SBOM audit, external secret scanner.
 - Audit inherited auto-updater and branding/personal assets.
 - End-to-end privacy/security review before setting GitHub visibility to public.
 
-No standalone execution or public network exposure was attempted in Stage 1.
+No full standalone MCP server startup, GUI mutation, or public network exposure was attempted in Stage 1. The source was uploaded through authenticated local Git without force-push.
