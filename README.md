@@ -1,34 +1,79 @@
-# MKShop MCP Community — private preparation beta
+# MKShop MCP Community
 
-Based on Aki MCP Server by Lạc Việt Anh (AkiTao), MIT licensed.
-Original project: https://github.com/lacvietanh/aki-mcp-sv
+**Status: Private beta — source review in progress. Not yet approved for public release or unattended production use.**
 
-## Status
+MKShop MCP Community lets compatible AI clients work with authorized files, commands, browsers and Windows desktop applications through the **Model Context Protocol (MCP)**. It is an independent community distribution based on [Aki MCP Server](https://github.com/lacvietanh/aki-mcp-sv), with additional Windows GUI automation and guarded multi-step workflows.
 
-Stage 1 source snapshot only. NOT verified for production or public release.
-No local configuration, OAuth secrets, screenshots, browser profiles, agent sessions, or Hub data are intentionally included.
+## Capabilities
 
-## Features
+| Module | What it does |
+|---|---|
+| File system and search | Read, edit, search and inspect files under configured roots |
+| Shell and tasks | Allowlist-governed commands, background tasks, logs and processes |
+| Native Windows GUI | Window inventory, Microsoft UI Automation inspection, input and screenshots |
+| GUI2 Workflow | Up to 20 steps, dry-run, verification, desktop lease, persistent receipts and guarded resume |
+| Browser/CDP | Chromium profile and tab automation, DevTools and screenshots |
+| Developer tools | Git, SQLite (read-only queries), localhost HTTP and terminal interfaces |
+| Remote MCP | OAuth-backed gateway; internet ingress **must be explicitly configured** |
 
-- Filesystem, command execution, Git, SQLite, browser/CDP, OAuth MCP integration.
-- Windows GUI UI Automation, screenshot and input via WinApp CLI.
-- GUI2 bounded workflow, desktop lease, dry-run, checkpoint and guarded resume.
+Existing command names retain the `aki__*` namespace for compatibility. Community branding does **not** imply endorsement by the original Aki MCP author.
 
-## Requirements
+## Prerequisites
 
-- Node.js >=22 and Windows WinApp CLI for Windows native GUI tools.
-- Run npm ci before testing; start with npm start only after reviewing ingress and settings.
-- Use a separate data directory for isolated testing.
+- **Node.js 22 or later**, including npm.
+- Windows 10/11 for native GUI automation (requires **Microsoft Windows App Development CLI / WinApp CLI**).
+- Git for Windows for selected Unix-style read-only shell commands on Windows.
+- An unlocked, interactive Windows user session for physical mouse and keyboard input.
+- Optional: PowerShell 7, Python/OpenCV for the screenshot-template fallback, and external CLI providers where relevant.
 
-## Security
+On macOS/Linux, inherited non-GUI MCP modules may work, but Windows-specific GUI tools are **Windows only** and have not been validated for this beta.
 
-- Keep endpoints loopback-only until OAuth/network/security assessment is complete.
-- Upstream launcher may initiate public ingress; DO NOT start before verifying this behavior.
-- The package is marked private=true intentionally to block accidental NPM publication.
-- Never add local secrets, OAuth storage, screenshots, logs or machine-specific files.
+## Quick start — isolated, local-only
 
-## Attribution
+```powershell
+git clone https://github.com/c0509kmndiep-lab/mkshop-mcp-community.git
+cd mkshop-mcp-community
+npm ci
+node ./scripts/start.js --no-browser
+```
 
-Original © 2026 Lạc Việt Anh (AkiTao), MIT License, see LICENSE.
-Added MKShop features remain subject to their contributors rights and MIT license.
-See THIRD_PARTY_NOTICES.md for licensing follow-up.
+Default loopback endpoints (Community only):
+
+- MCP gateway: `http://127.0.0.1:18999/mcp`
+- Local control panel: `http://127.0.0.1:18998/` (requires the generated panel token)
+
+The app creates its own data directory at `~/.mkshop-mcp-community/data/`, separate from the Aki MCP installation. The initial allowed workspace is its `workspace/` subfolder, **not** your home directory. To grant access to another folder, review the local panel's allowed roots first.
+
+To avoid interfering with an existing Aki MCP installation, do **not** run both with identical ports or data directory overrides. See [Installation and isolation](docs/INSTALL.md).
+
+## Remote AI clients (ChatGPT, Claude and others)
+
+A web/cloud AI client cannot reach `127.0.0.1` on your computer. To connect from outside, provide your own authenticated HTTPS ingress, review the server's OAuth registration and explicitly enable the intended remote connection. Never forward the panel port or disable authentication.
+
+**There is no automatic public tunnel in the default configuration.** Tailscale Funnel is opt-in via `MKSHOP_ENABLE_FUNNEL=1`. Cloudflare credentials or `PUBLIC_ORIGIN` are explicit settings and require independent security review. See [Security](SECURITY.md).
+
+## Windows GUI2 workflow
+
+The native GUI layer uses Microsoft UI Automation and can fall back to bounded, explicit coordinates or OpenCV matching when the UI tree is sparse. The `aki__gui2_workflow_execute` tool supports up to 20 steps, explicit `HWND`, `dryRun=true` by default and `confirmMutations=true` for live actions. Interrupted mutating steps are **not** replayed blindly; a pending receipt must be reviewed.
+
+The GUI feature cannot bypass Windows UAC, secure desktops or a locked session. GUI operations sharing one physical desktop must be serialized across agents.
+
+## Documentation
+
+- [Install / first-run isolation](docs/INSTALL.md)
+- [Architecture and module inventory](docs/ARCHITECTURE.md)
+- [Private beta release checklist](docs/RELEASE_CHECKLIST.md)
+- [Security and vulnerability reporting](SECURITY.md)
+- [Contributing](CONTRIBUTING.md)
+- [Stage 1 local audit](docs/STAGE1_STATUS.md)
+- [Third-party notices](THIRD_PARTY_NOTICES.md)
+
+## License and attribution
+
+Licensed under the **MIT License**. Based on **Aki MCP Server** by **Lạc Việt Anh (AkiTao)** — original MIT copyright and permission terms are retained in [LICENSE](LICENSE). Community modifications are credited separately where applicable. Upstream: https://github.com/lacvietanh/aki-mcp-sv
+
+The MIT license does not grant a trademark endorsement or supersede licenses of third-party dependencies, fonts and images. A full dependency/asset audit is still pending.
+
+## Current verification
+
+The Stage 1 local snapshot passed static JavaScript syntax checks and internal relative-import inspection; limited high-confidence secret-pattern scanning reported no findings. This **does not** establish runtime functionality, absence of all secrets or production readiness. Dependencies, clean installation, GUI integration, security and license audits remain open before any public release.

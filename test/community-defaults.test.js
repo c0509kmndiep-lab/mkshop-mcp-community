@@ -1,0 +1,30 @@
+import assert from 'node:assert/strict';
+import { mkdtempSync, rmSync, existsSync } from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+
+const base = mkdtempSync(path.join(os.tmpdir(), 'mkshop-mcp-community-test-'));
+const profile = path.join(base, 'profile');
+const oldProfile = process.env.AKI_MCP_DATA_DIR;
+const oldRoots = process.env.MCP_DATA_DIR;
+process.env.AKI_MCP_DATA_DIR = profile;
+delete process.env.MCP_DATA_DIR;
+
+try {
+  const [{ getRoots }, { loadAllowlistDirs }, { USER_DIR }] = await Promise.all([
+    import('../scripts/roots.js'),
+    import('../scripts/allowlist.js'),
+    import('../scripts/userdata.js'),
+  ]);
+  assert.equal(USER_DIR, profile);
+  const roots = getRoots();
+  assert.deepEqual(roots, [path.join(profile, 'workspace')]);
+  assert.equal(existsSync(roots[0]), true);
+  assert.deepEqual(loadAllowlistDirs(), []);
+  assert.equal(roots.some(p => p === os.homedir()), false);
+  console.log('PASS: isolated filesystem roots and no implicit trusted command folders');
+} finally {
+  if (oldProfile === undefined) delete process.env.AKI_MCP_DATA_DIR; else process.env.AKI_MCP_DATA_DIR = oldProfile;
+  if (oldRoots === undefined) delete process.env.MCP_DATA_DIR; else process.env.MCP_DATA_DIR = oldRoots;
+  rmSync(base, { recursive: true, force: true });
+}

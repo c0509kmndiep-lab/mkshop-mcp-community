@@ -1,25 +1,26 @@
 // Path containment shared by every MCP tool that touches the filesystem — one implementation, because a second copy of a security boundary is a second chance to get it subtly wrong.
 import { realpath } from 'node:fs/promises';
+import { mkdirSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { loadFolders, loadAllowlistDirs } from './allowlist.js';
+import { USER_DIR } from './userdata.js';
 
-// Fallback when setting.json carries no `folders` key yet (fresh install, or a folder edit was never saved via the panel): reconstructs the same default the old boot-time MCP_DATA_DIR env var used to expand to (dataDir + ~/.aki + ~/.claude), so behavior is unchanged until the first save — including the rule/config dirs the panel's own prompt-builder tells the AI to read.
+// Community safe default: only the dedicated workspace, never HOME, ~/.aki or ~/.claude.
+// A user can expand access explicitly from the local control panel (Allowed Folders).
 function envDefaultRoots() {
-  const base = (process.env.MCP_DATA_DIR || os.homedir())
-    .split(',')
-    .map((p) => p.trim())
-    .filter(Boolean)
-    .map((p) => path.resolve(p));
-  const always = [path.join(os.homedir(), '.aki'), path.join(os.homedir(), '.claude')];
-  return [...new Set([...(base.length ? base : [path.resolve(os.homedir())]), ...always])];
+  const configured = (process.env.MCP_DATA_DIR || '').split(',').map(p => p.trim()).filter(Boolean);
+  if (configured.length) return [...new Set(configured.map(p => path.resolve(p)))];
+  const workspace = path.join(USER_DIR, 'workspace');
+  mkdirSync(workspace, { recursive: true, mode: 0o700 });
+  return [workspace];
 }
 
 // Per-call read (no module-level snapshot): a folder add/remove in setting.json takes effect on the very next call, the same way the shell allowlist already does. An empty/malformed read must never widen to "no restriction" — the safe-default fallback below is mandatory, never optional.
 export function getRoots() {
   const stored = loadFolders().map((p) => path.resolve(p));
   const roots = stored.length ? stored : envDefaultRoots();
-  return roots.length ? roots : [path.resolve(os.homedir())];
+  return roots.length ? roots : envDefaultRoots();
 }
 
 export function containedIn(abs, root) {

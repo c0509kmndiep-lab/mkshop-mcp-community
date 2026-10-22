@@ -19,17 +19,17 @@ if (process.argv.includes('-v') || process.argv.includes('--version')) {
 }
 
 if (process.argv.includes('-h') || process.argv.includes('--help')) {
-  console.log(`@akinet/akimcp - Self-hosted remote MCP server for local filesystem & shell
+  console.log(`MKShop MCP Community - Self-hosted MCP server for local files, GUI and shell
 
 Usage:
-  akimcp [options]
+  mkshop-mcp [options]
 
 Options:
   -v, --version            Show version number
   -h, --help               Show help
   --dev                    Run in development mode (isolated data dir & dev ports)
-  --port <port>            Gatekeeper port (default: 9999, dev: 9997)
-  --panel-port <port>      Control panel port (default: 9998, dev: 9996)
+  --port <port>            Gatekeeper port (default: 18999, dev: 18997)
+  --panel-port <port>      Control panel port (default: 18998, dev: 18996)
   --tunnel <cred.json>     Path to Cloudflare Tunnel credentials JSON
   --origin <url>           Public origin URL (required with --tunnel, e.g. https://mcp.yourdomain.com)
   --no-browser             Do not automatically open the web panel in browser

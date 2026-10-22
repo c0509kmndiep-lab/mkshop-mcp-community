@@ -31,6 +31,11 @@ export function getLocalVersions() {
 // { mcp:{current,latest,updateAvailable}, rule:{current,latest,updateAvailable,installed,unreleasedOnly,state} }. current is local (always attempted); latest is null on any network/parse failure; mcp.updateAvailable is only true when latest > current.
 export async function checkForUpdate({ timeoutMs = 3000 } = {}) {
   const local = getLocalVersions();
+  // Community beta: disable background requests to upstream unless explicitly enabled.
+  if (process.env.MKSHOP_ENABLE_UPDATE_CHECK !== '1') return {
+    mcp: { current: local.mcp, latest: null, updateAvailable: false },
+    rule: getRuleStatus(null),
+  };
   const [mcpPkg, ruleLatest] = await Promise.all([
     fetchText(MCP_PKG_URL, timeoutMs),
     fetchLatestRuleVersion(timeoutMs),
