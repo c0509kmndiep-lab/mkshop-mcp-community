@@ -4,7 +4,7 @@ MKShop MCP Community can read/write files, execute approved shell commands, insp
 
 ## Beta scope
 
-Private development snapshot. No security warranty; do not expose publicly or use unattended on sensitive systems. Public network ingress is disabled by default. If you intentionally enable ingress, require HTTPS, correct OAuth authorization, per-client access review and restricted allowed folders.
+Public source beta. No security warranty; do not expose the running MCP endpoint publicly without reviewing authentication and access controls, and do not use it unattended on sensitive systems. Public network ingress is disabled by default. If you intentionally enable ingress, require HTTPS, correct OAuth authorization, per-client access review and restricted allowed folders.
 
 ## Hardening basics
 
@@ -18,7 +18,7 @@ Private development snapshot. No security warranty; do not expose publicly or us
 
 ## Report a vulnerability
 
-Do not open a public issue containing exploit steps, keys, or private data. While private beta is in progress, contact the repository maintainers via a private GitHub channel. Enable GitHub's private vulnerability reporting before making this repository public.
+Do not open a public issue containing exploit steps, keys, or private data. Report vulnerabilities privately to the maintainers. Use GitHub's private vulnerability reporting if enabled, or another confidential channel; never share exploit details or credentials in public issues.
 
 ## Upstream attribution
 

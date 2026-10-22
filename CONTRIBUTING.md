@@ -1,6 +1,6 @@
 # Contributing
 
-Contributions are welcome after the private beta gate. Keep changes portable and avoid dependencies on a contributor's machine, private paths, tokens or CLI accounts.
+Contributions are welcome for this public source beta. Keep changes portable and avoid dependencies on a contributor's machine, private paths, tokens or CLI accounts.
 
 ## Local development
 

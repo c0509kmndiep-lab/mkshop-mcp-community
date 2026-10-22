@@ -1,4 +1,4 @@
-# Stage 1 — private Community preparation
+# Stage 1 — Community preparation (historical record)
 
 Date: 2026-10-22
 
@@ -24,8 +24,8 @@ Date: 2026-10-22
 - Community default-roots smoke test PASS: only isolated workspace, no default trusted-script folders.
 - GitHub private-beta source pushed to c0509kmndiep-lab/mkshop-mcp-community; branch SHA verified locally against git ls-remote.
 
-## Pending before public release
-- Confirm repository visibility via GitHub settings before any public release; public unauthenticated API currently returns 404 (consistent with private visibility).
+## Pending for stable / production-ready release
+- Verify public source publication and GitHub Actions results; source may be public while the package remains beta.
 - Review GitHub Actions CI run results after upload.
 - Independent npm dependency installation, npm pack, GUI runtime smoke test.
 - Full third-party license and SBOM audit, external secret scanner.

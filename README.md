@@ -1,6 +1,6 @@
 # MKShop MCP Community
 
-**Status: Private beta — source review in progress. Not yet approved for public release or unattended production use.**
+**Status: Public source beta — provided for evaluation and development. Not yet security-audited for unattended production use.**
 
 **MKShop MCP Community is a standalone MCP server that gives authorized AI clients tools to access and control a local computer**: files, terminal, browsers, Windows desktop UI, and local services. It is an independent community distribution based on [Aki MCP Server](https://github.com/lacvietanh/aki-mcp-sv), enhanced with native Windows GUI automation and guarded multi-step workflows.
 
@@ -68,7 +68,7 @@ The GUI feature cannot bypass Windows UAC, secure desktops or a locked session. 
 
 - [Install / first-run isolation](docs/INSTALL.md)
 - [Architecture and module inventory](docs/ARCHITECTURE.md)
-- [Private beta release checklist](docs/RELEASE_CHECKLIST.md)
+- [Stable release readiness checklist](docs/RELEASE_CHECKLIST.md)
 - [Security and vulnerability reporting](SECURITY.md)
 - [Contributing](CONTRIBUTING.md)
 - [Stage 1 local audit](docs/STAGE1_STATUS.md)

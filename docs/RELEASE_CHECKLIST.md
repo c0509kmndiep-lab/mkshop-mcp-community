@@ -1,6 +1,6 @@
-# Release gates for public distribution
+# Release gates for a stable / production-ready release
 
-Private beta is for code review. **Do not make this repository public** until every blocking item is satisfied.
+The repository is published as a **public source beta** for code review and testing. The following checks are prerequisites to claiming a stable, security-reviewed production release.
 
 ## Completed in Stage 1
 
@@ -29,4 +29,4 @@ Private beta is for code review. **Do not make this repository public** until ev
 - [ ] Confirm optional tools have safe opt-in and do not inherit Aki production profiles
 - [ ] Verify docs and examples on an isolated Windows account/VM or equivalent local sandbox
 
-Publishing a private GitHub source snapshot is **not** a public beta approval.
+A public source repository does **not** imply approval for privileged or unattended production deployment.
