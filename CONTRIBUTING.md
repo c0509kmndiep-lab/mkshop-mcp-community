@@ -1,6 +1,6 @@
 # Contributing
 
-Contributions are welcome after the private beta gate. Keep changes limited to the Community distribution; do not require proprietary MKShop Hub or a specific owner's machine, paths, tokens or CLI accounts.
+Contributions are welcome after the private beta gate. Keep changes portable and avoid dependencies on a contributor's machine, private paths, tokens or CLI accounts.
 
 ## Local development
 

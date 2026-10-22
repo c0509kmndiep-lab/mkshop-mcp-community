@@ -2,21 +2,27 @@
 
 **Status: Private beta — source review in progress. Not yet approved for public release or unattended production use.**
 
-MKShop MCP Community lets compatible AI clients work with authorized files, commands, browsers and Windows desktop applications through the **Model Context Protocol (MCP)**. It is an independent community distribution based on [Aki MCP Server](https://github.com/lacvietanh/aki-mcp-sv), with additional Windows GUI automation and guarded multi-step workflows.
+**MKShop MCP Community is a standalone MCP server that gives authorized AI clients tools to access and control a local computer**: files, terminal, browsers, Windows desktop UI, and local services. It is an independent community distribution based on [Aki MCP Server](https://github.com/lacvietanh/aki-mcp-sv), enhanced with native Windows GUI automation and guarded multi-step workflows.
+
+**Tiếng Việt:** Máy chủ MCP giúp AI truy cập và điều khiển máy tính theo quyền được cấp: đọc/ghi tệp, chạy lệnh, điều khiển trình duyệt và thao tác giao diện Windows. Các chức năng GUI dành cho Windows; một số công cụ khác có thể hoạt động trên những nền tảng khác khi đáp ứng phụ thuộc.
 
 ## Capabilities
 
 | Module | What it does |
 |---|---|
 | File system and search | Read, edit, search and inspect files under configured roots |
-| Shell and tasks | Allowlist-governed commands, background tasks, logs and processes |
+| Shell and local jobs | Allowlist-governed commands, background processes, logs and terminals |
 | Native Windows GUI | Window inventory, Microsoft UI Automation inspection, input and screenshots |
 | GUI2 Workflow | Up to 20 steps, dry-run, verification, desktop lease, persistent receipts and guarded resume |
 | Browser/CDP | Chromium profile and tab automation, DevTools and screenshots |
-| Developer tools | Git, SQLite (read-only queries), localhost HTTP and terminal interfaces |
+| Developer tools | Git, read-only SQLite queries, localhost HTTP and terminal interfaces; optional Postman/CLI integrations |
 | Remote MCP | OAuth-backed gateway; internet ingress **must be explicitly configured** |
 
 Existing command names retain the `aki__*` namespace for compatibility. Community branding does **not** imply endorsement by the original Aki MCP author.
+
+### Design
+
+The MCP server exposes individual tools through an OAuth-protected endpoint and includes a local control panel for configuration. Background jobs are OS processes with logs; optional Postman and external CLI integrations are supported when their prerequisites are installed.
 
 ## Prerequisites
 
@@ -26,7 +32,7 @@ Existing command names retain the `aki__*` namespace for compatibility. Communit
 - An unlocked, interactive Windows user session for physical mouse and keyboard input.
 - Optional: PowerShell 7, Python/OpenCV for the screenshot-template fallback, and external CLI providers where relevant.
 
-On macOS/Linux, inherited non-GUI MCP modules may work, but Windows-specific GUI tools are **Windows only** and have not been validated for this beta.
+**Platform scope:** Windows 10/11 is the primary target and the only platform for the bundled native GUI tools. The underlying Node.js MCP/file/search/shell/browser modules are designed to be cross-platform, but the Community beta has not been fully validated on macOS/Linux.
 
 ## Quick start — isolated, local-only
 
@@ -74,6 +80,17 @@ Licensed under the **MIT License**. Based on **Aki MCP Server** by **Lạc Việ
 
 The MIT license does not grant a trademark endorsement or supersede licenses of third-party dependencies, fonts and images. A full dependency/asset audit is still pending.
 
-## Current verification
+## Tests and verification
 
-The Stage 1 local snapshot passed static JavaScript syntax checks and internal relative-import inspection; limited high-confidence secret-pattern scanning reported no findings. This **does not** establish runtime functionality, absence of all secrets or production readiness. Dependencies, clean installation, GUI integration, security and license audits remain open before any public release.
+Run the isolated, non-destructive regression suite with:
+
+```powershell
+npm ci --ignore-scripts
+npm test
+```
+
+The Community smoke runner launches every test with a separate temporary configuration directory and hides child console windows on Windows.
+
+**Windows local beta verification (2026-10-22):** 10/10 scoped regression tests passed, including OAuth/panel, MCP transport, file-root security, GUI tool registration and GUI2 workflow validation. An additional read-only GUI inspection succeeded on the actual Windows desktop. Static JavaScript syntax and internal import checks passed; basic secret-pattern scanning produced no findings.
+
+**Limitations:** This is not a full end-to-end certification. Native dependency build/install scripts were intentionally skipped, no GUI mutations were performed, and a clean-host installation, full legacy integration suite, security audit and third-party license review remain pending.

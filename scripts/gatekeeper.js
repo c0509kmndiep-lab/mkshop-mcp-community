@@ -42,7 +42,7 @@ function refuse(res, retryAfterSeconds) {
 // origin: the public https origin (Tailscale MagicDNS / Cloudflare) or null. Local-First: the /mcp engine binds
 // 127.0.0.1 and serves local clients with or without a public ingress; OAuth discovery metadata only exists once
 // an ingress is attached. onFatal: called if the listen socket errors, so the orchestrator tears the whole stack
-// down instead of leaking an orphaned hub.
+// down instead of leaving an orphaned MCP service.
 export function startGatekeeper(origin = null, onFatal) {
   const port = Number(process.env.GATEKEEPER_PORT || 9999);
   loadOrCreatePassphrase();

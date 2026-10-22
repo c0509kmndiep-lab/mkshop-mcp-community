@@ -1,5 +1,7 @@
 # Community architecture
 
+This repository provides an OAuth-protected MCP server exposing local computer automation tools to compatible AI clients. It includes its own configuration panel and can operate as a standalone service.
+
 ```text
 AI client / MCP consumer
       |
@@ -7,7 +9,7 @@ AI client / MCP consumer
       v
 Gatekeeper / OAuth / Streamable MCP bridge
       |
-      +---- Files, search, shell, tasks, terminal/ConPTY
+      +---- Files, search, shell, OS background jobs, terminal/ConPTY
       +---- Git, SQLite, localhost HTTP, notifications
       +---- Chromium DevTools (CDP), browser profiles, Postman
       +---- Windows native UIA (WinApp CLI)
@@ -33,10 +35,10 @@ Gatekeeper / OAuth / Streamable MCP bridge
 - Mutations require explicit confirmation; interrupted mutations are never retried blindly.
 - File roots are dynamically re-evaluated after configuration changes.
 - Local-only by default; remote exposure requires an explicit user configuration.
-- The repository does **not** include local OAuth secrets, logs, or production Hub configuration.
+- Credentials and runtime logs are stored outside the source repository and are not bundled in the distribution.
 
 ### Compatibility limitations
 
-- Some integrations inherited from Aki MCP expect optional external CLI and services and are not standalone guarantees.
+- Optional integrations inherited from Aki MCP can invoke external CLI programs or Postman when available.
 - Windows UIA is distinct from Chromium CDP; use CDP for browser renderers when available.
 - No full cross-platform or multi-machine validation has been completed.

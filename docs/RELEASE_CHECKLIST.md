@@ -12,14 +12,16 @@ Private beta is for code review. **Do not make this repository public** until ev
 - [x] Disable implicit trusted executable zones
 - [x] Static JavaScript syntax and local import checks
 - [x] Limited secret-pattern checks; remove known machine-specific paths and personal donation widgets
+- [x] Confirm GitHub repository is private before metadata updates
+- [x] Run 10/10 isolated, non-destructive Community smoke tests on Windows
+- [x] Validate Windows UI Automation read-only inspection against a real window
 
 ## Blocking checks
 
-- [ ] Confirm GitHub private visibility and repository permissions
 - [ ] Review all committed binaries/images and third-party redistribution rights
 - [ ] Run independent secret-scanning tool on worktree and Git history
 - [ ] Generate SPDX/CycloneDX SBOM, audit transitive licenses and dependencies
-- [ ] Test clean dependency install `npm ci` with production services untouched
+- [ ] Test full clean-host dependency install with native lifecycle scripts; `npm ci --ignore-scripts` already passed without touching production
 - [ ] Validate MCP launch/stop, OAuth, port binding, and first-run filesystem restrictions
 - [ ] Validate native Windows GUI and GUI2 workflow with an isolated test app
 - [ ] Verify entire CI/test suite and fix environment-specific failures

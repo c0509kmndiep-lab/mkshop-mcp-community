@@ -255,7 +255,7 @@ export const ROUTES = {
 
     return { ok: true, message: 'Applied — akimcp (stdio) → ~/.gemini/config/mcp_config.json + pre-allow → antigravity-cli/settings.json. Restart agy to pick it up.' };
   },
-  // No hub restart: setFolders writes setting.json, and roots.js reads it fresh per call — a save takes effect on the next shell/find_path/search_content call, same as the allowlist.
+  // No MCP server restart: setFolders writes setting.json, and roots.js reads it fresh per call — a save takes effect on the next shell/find_path/search_content call, same as the allowlist.
   'POST /api/paths': async (body) => {
     setFolders(validatePaths(body.paths));
     return { ok: true, message: 'saved — shell, find, and search pick this up on their next call' };
@@ -264,7 +264,7 @@ export const ROUTES = {
     setShellAllowlist(validateAllowlist(body.allowlist));
     return { ok: true, message: `saved allowlist to ${SETTINGS_PATH}` };
   },
-  // No hub restart: shell-mcp reads allowlistDirs fresh per command (checkPermission → preallowedByDir), so a save takes effect on the next run_cmd.
+  // No MCP server restart: shell-mcp reads allowlistDirs fresh per command (checkPermission → preallowedByDir), so a save takes effect on the next run_cmd.
   'POST /api/trusted-dirs': async (body) => {
     setTrustedDirs(validateTrustedDirs(body.dirs));
     return { ok: true, message: `saved trusted directories to ${SETTINGS_PATH}` };

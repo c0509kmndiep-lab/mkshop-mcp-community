@@ -1,6 +1,6 @@
 # Install and isolate MKShop MCP Community
 
-**Beta guidance: work only in a separate directory and data profile. Do not replace a running Aki or MKShop Hub service.**
+**Beta guidance: use a separate directory, configuration profile and ports to avoid interfering with any other MCP services already running on your computer.**
 
 ## 1. Dependencies
 

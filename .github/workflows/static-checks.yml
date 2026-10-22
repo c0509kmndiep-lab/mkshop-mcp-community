@@ -18,5 +18,7 @@ jobs:
           set -euo pipefail
           find scripts test bin public -type f \( -name '*.js' -o -name '*.cjs' -o -name '*.mjs' \) -print0 | xargs -0 -r -n 1 node --check
           echo "Static JavaScript syntax check passed"
-      - name: Verify safe Community defaults (no external services)
-        run: node ./test/community-defaults.test.js
+      - name: Install dependencies (skip native install scripts)
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Run isolated Community smoke suite
+        run: npm test

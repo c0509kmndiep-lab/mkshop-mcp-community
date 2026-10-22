@@ -22,7 +22,7 @@ const GROK_CONNECTOR_URL = 'https://grok.com/connectors';
 const TOKENIZER_URL = 'https://chromewebstore.google.com/detail/claude-token-counter/bioobpobpbeohjoefndgkiaakboimpch';
 const GROK_USAGE_URL = 'https://chromewebstore.google.com/detail/grok-usage-watch-%E2%80%93-rate-l/bmpboaihdkpkjehbceegdmndkonlpdge';
 const RULES_REPO_URL = 'https://github.com/lacvietanh/akidevrule';
-const MCP_REPO_URL = 'https://github.com/lacvietanh/aki-mcp-sv';
+const MCP_REPO_URL = 'https://github.com/c0509kmndiep-lab/mkshop-mcp-community';
 const RULES_INSTALL_CMD = 'npx @akinet/akidevrule@latest';
 const TAILSCALE_DOWNLOAD_URL = 'https://tailscale.com/download';
 const TAILSCALE_FUNNEL_URL = 'https://tailscale.com/docs/features/tailscale-funnel';
@@ -126,7 +126,7 @@ export function renderPanel({ origin, ingress = 'funnel', client, passphrase, to
     <p class="sub">Secure local files and shell access for Claude, ChatGPT, Grok, and Gemini through OAuth 2.1.</p>
     <p class="panel-meta"><span>Local panel</span><span>127.0.0.1</span><span>${esc(ingressLabel)}</span><span>PID ${pid}</span><span>Started ${esc(startedLabel)}</span></p>
   </div>
-  <a class="gh-top" href="${MCP_REPO_URL}" target="_blank" rel="noopener" aria-label="View AKIMCP on GitHub" title="View on GitHub"><svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true"><path d="${SVG.github}"/></svg></a>
+  <a class="gh-top" href="${MCP_REPO_URL}" target="_blank" rel="noopener" aria-label="View MKShop MCP Community on GitHub" title="View on GitHub">GitHub ↗</a>
 </header>
 <p class="helptext panel-paths">Running repo: <span class="mono">${esc(repoRoot)}</span> · Config &amp; keys: <span class="mono">${esc(userDir)}</span></p>
 ${updateBanner}
@@ -174,7 +174,7 @@ ${field('Re-sync command', 'tailscale funnel --https=443 off && tailscale serve 
 <div class="row"><label>Origin</label><input type="text" id="tunnelOriginInput" placeholder="https://your-host"></div>
 <div class="acts"><button class="primary" data-act="saveTunnel">Save ingress</button><span class="msg" id="msgTunnel"></span></div>
 <div id="savedIngressBox"></div>
-<p class="helptext">No tunnel yet? <a href="${MCP_REPO_URL}#exposing-to-the-internet" target="_blank" rel="noopener">README: Exposing to the internet</a>.</p>
+<p class="helptext">No tunnel yet? <a href="${MCP_REPO_URL}/blob/main/docs/INSTALL.md" target="_blank" rel="noopener">Installation and remote access guide</a>.</p>
 <h3 class="subh">Or: any HTTPS edge you already run</h3>
 <p class="helptext">Set <span class="mono">PUBLIC_ORIGIN</span> in <span class="mono">.env</span> (copy from <span class="mono">.env.example</span>), or prefix the start command: ${copyEl('PUBLIC_ORIGIN=https://your-host npm start')}</p>
 </div>
