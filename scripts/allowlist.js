@@ -6,19 +6,20 @@ import { SETTINGS_PATH } from './userdata.js';
 
 // Entry form: a bare string allows any subcommand; [bin, ...subs] restricts to those. Structure carries the level — no hand-written null.
 // find/sort/fd excluded on purpose: their flags escape read-only (find -exec/-delete, sort -o, fd -x) and the args[0] gate can't restrain a flag; aki__find_path/aki__search_content cover read-only lookup.
+// npm test/run and npx are deliberately excluded from the default: package scripts, test runners and npx can execute project-controlled code. Owners can still opt in explicitly from the control panel.
 // Unix tools work as-is on macOS/Linux and on Windows when Git for Windows usr\bin is on PATH.
 const UNIX_DEFAULT = [
   'ls', 'cat', 'pwd', 'grep', 'head', 'tail', 'wc', 'file', 'stat', 'tree', 'ps', 'df', 'du',
   'whoami', 'uname', 'uniq', 'cut', 'diff', 'jq',
   'basename', 'dirname', 'realpath', 'which', 'date', 'strings', 'uptime', 'pgrep',
   ['lsof', '-i'],
-  ['npm', 'list', 'ls', 'outdated', 'test', 'run'], ['npx', 'vitest'], ['pip', 'freeze', 'list'], ['node', '-v'],
+  ['npm', 'list', 'ls', 'outdated'], ['pip', 'freeze', 'list'], ['node', '-v'],
   // fetch excluded — writes local refs, not read-only; ls-remote kept but shell-mcp.js requires zero extra args (its ext:: transport can smuggle code execution via a repository/URL argument).
   ['git', 'status', 'log', 'diff', 'show', 'branch', 'remote', 'blame', 'check-ignore', 'ls-files', 'rev-parse', 'tag', 'ls-remote', 'describe', 'shortlog', 'merge-base'],
 ];
 
-// Per-OS extras, selected as data by process.platform (never a business-logic branch). open/sips/ffmpeg are macOS media helpers — not read-only, unlike the rest of the set.
-const MAC_EXTRA = ['vm_stat', ['sysctl', '-n'], ['top', '-l'], ['diskutil', 'list', 'info'], 'ifconfig', ['netstat', '-an'], 'sw_vers', 'system_profiler', 'sips', 'open', 'ffmpeg'];
+// Per-OS extras, selected as data by process.platform (never a business-logic branch). Keep the defaults inspection-only: launchers and media tools such as open/sips/ffmpeg can mutate state or execute project-controlled inputs, so they are opt-in instead of defaults.
+const MAC_EXTRA = ['vm_stat', ['sysctl', '-n'], ['top', '-l'], ['diskutil', 'list', 'info'], 'ifconfig', ['netstat', '-an'], 'sw_vers', 'system_profiler'];
 const LINUX_EXTRA = ['free', ['top', '-b'], 'nproc', 'lsblk', ['ip', 'addr'], ['ss', '-tuln']];
 const WIN_EXTRA = ['where', 'findstr', 'tasklist', 'hostname', 'systeminfo', 'Get-CimInstance', 'Get-Counter', 'Get-Process', 'Get-PSDrive', 'Get-Volume', 'Get-Service', 'Get-NetIPAddress', 'Get-NetTCPConnection', 'Test-Connection', 'Get-ComputerInfo'];
 
@@ -39,9 +40,11 @@ export function readSettings() {
 }
 
 const isPlainObject = (v) => v !== null && typeof v === 'object' && !Array.isArray(v);
+const isValidSubs = (subs) => subs === null || (Array.isArray(subs) && subs.every((s) => typeof s === 'string'));
 
 // Normalizes three stored shapes to { overrides, revoked }: v3 { added:[entries], revoked }, v2 { overrides:{bin:null|array}, revoked }, v1 flat map. `revoked` records a removed default that an absent key cannot (the P0 bug). Format detail: docs/plan/done/shell-allowlist.md.
 function normalizeStored(stored) {
+  if (!isPlainObject(stored)) return { overrides: {}, revoked: [] };
   if (Array.isArray(stored.added)) {
     return { overrides: toMap(stored.added), revoked: Array.isArray(stored.revoked) ? stored.revoked : [] };
   }
@@ -55,8 +58,19 @@ export function loadAllowlist() {
   const stored = readSettings().shell?.allowlist;
   if (!stored || typeof stored !== 'object') return DEFAULT_ALLOWLIST;
   const { overrides, revoked } = normalizeStored(stored);
-  const merged = { ...DEFAULT_ALLOWLIST, ...overrides };
-  for (const bin of revoked) delete merged[bin];
+  const merged = { ...DEFAULT_ALLOWLIST };
+
+  // Fail closed on malformed stored entries. Previously any non-array value (for example
+  // { git: 42 }) reached shell-mcp.js where "not an array" meant unrestricted subcommands.
+  // A damaged/manual settings edit must never widen command execution.
+  for (const [bin, subs] of Object.entries(overrides)) {
+    if (!bin || !isValidSubs(subs)) {
+      delete merged[bin];
+      continue;
+    }
+    merged[bin] = subs;
+  }
+  for (const bin of revoked) if (typeof bin === 'string') delete merged[bin];
   return merged;
 }
 
