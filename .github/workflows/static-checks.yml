@@ -20,5 +20,22 @@ jobs:
           echo "Static JavaScript syntax check passed"
       - name: Validate isolated default access policy (no dependencies required)
         run: node ./test/community-defaults.test.js
-      # The Windows GUI/CDP/OAuth integration smoke suite is run on an interactive
+
+  security-regressions:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      # These tests need the JS SDK/zod/diff but not native node-pty lifecycle scripts.
+      - name: Install JS dependencies without lifecycle scripts
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Shell execution-boundary regression tests
+        run: node ./test/shell-mcp.test.js
+      - name: Local fetch SSRF/response-cap regression tests
+        run: node ./test/fetch-mcp.test.js
+
+      # Windows GUI/CDP/OAuth integration is still exercised on an interactive
       # Windows host; headless Linux CI cannot verify native WinApp CLI behavior.
